@@ -1,0 +1,47 @@
+<h2>Flight Booking</h2>
+<form (ngSubmit)="onSubmit()" #bookingForm="ngForm">
+  <label for="flightId">Select Flight:</label>
+  <select id="flightId" [(ngModel)]="flightId" name="flightId" required>
+    <option [ngValue]="null" disabled selected>-- Choose a Flight --</option>
+    <option *ngFor="let flight of availableFlights" [ngValue]="flight.id">
+      {{ flight.flightNumber }} - {{ flight.origin }} to {{ flight.destination }}
+    </option>
+  </select>
+  <br /><br />
+
+  <label for="passengerName">Passenger Name:</label>
+  <input
+    type="text"
+    id="passengerName"
+    [(ngModel)]="passengerName"
+    name="passengerName"
+    required
+  />
+  <br /><br />
+
+  <button type="submit">Book Flight</button>
+</form>
+
+<p *ngIf="confirmationMessage" class="confirmation-message">
+  {{ confirmationMessage }}
+</p>
+
+
+<h3>All Bookings</h3>
+<table border="1" *ngIf="bookings.length > 0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Flight ID</th>
+      <th>Passenger Name</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let booking of bookings; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ booking.flightId }}</td>
+      <td>{{ booking.passengerName }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,149 @@
+<form #flightForm="ngForm" (ngSubmit)="onSubmit(flightForm)">
+<h1>Welcome to Flight-Booking </h1>
+  <!-- Flight Number -->
+  <div>
+    <label>Flight Number:</label>
+    <input
+      name="flightNumber"
+      [(ngModel)]="flight.flightNumber"
+      required
+      minlength="5"
+      pattern="^[a-zA-Z0-9]+$"
+      #flightNumber="ngModel"
+    />
+    <div *ngIf="flightNumber.touched && flightNumber.invalid">
+      <small *ngIf="flightNumber.errors?.['required']">Flight Number is required.</small>
+      <small *ngIf="flightNumber.errors?.['minlength']">Minimum 5 characters.</small>
+      <small *ngIf="flightNumber.errors?.['pattern']">Alphanumeric only.</small>
+    </div>
+  </div>
+
+  <!-- Departure City -->
+  <div>
+    <label>Departure City:</label>
+    <input
+      name="departureCity"
+      [(ngModel)]="flight.departureCity"
+      required
+      #departureCity="ngModel"
+    />
+    <div *ngIf="departureCity.touched && departureCity.invalid">
+      <small>Departure City is required.</small>
+    </div>
+  </div>
+
+  <!-- Arrival City -->
+  <div>
+    <label>Arrival City:</label>
+    <input
+      name="arrivalCity"
+      [(ngModel)]="flight.arrivalCity"
+      required
+      #arrivalCity="ngModel"
+    />
+    <div *ngIf="arrivalCity.touched && arrivalCity.invalid">
+      <small>Arrival City is required.</small>
+    </div>
+    <div *ngIf="departureCity.value && arrivalCity.value && citiesAreSame(departureCity.value, arrivalCity.value)">
+      <small>Arrival and Departure cities must be different.</small>
+    </div>
+  </div>
+
+  <!-- Departure Date -->
+  <div>
+    <label>Departure Date:</label>
+    <input
+      type="date"
+      name="departureDate"
+      [(ngModel)]="flight.departureDate"
+      required
+      min="{{ today }}"
+      #departureDate="ngModel"
+    />
+    <div *ngIf="departureDate.touched && departureDate.invalid">
+      <small *ngIf="departureDate.errors?.['required']">Departure Date is required.</small>
+      <small *ngIf="departureDate.errors?.['min']">Date must be in the future.</small>
+    </div>
+  </div>
+
+  <!-- Available Seats -->
+  <div>
+    <label>Available Seats:</label>
+    <input
+      type="number"
+      name="availableSeats"
+      [(ngModel)]="flight.availableSeats"
+      required
+      min="1"
+      max="300"
+      #availableSeats="ngModel"
+    />
+    <div *ngIf="availableSeats.touched && availableSeats.invalid">
+      <small *ngIf="availableSeats.errors?.['required']">Seats are required.</small>
+      <small *ngIf="availableSeats.errors?.['min']">Minimum 1 seat required.</small>
+      <small *ngIf="availableSeats.errors?.['max']">Maximum 300 seats allowed.</small>
+    </div>
+  </div>
+
+  <!-- Flight Class -->
+  <div>
+    <label>Flight Class:</label>
+    <select
+      name="flightClass"
+      [(ngModel)]="flight.flightClass"
+      required
+      #flightClass="ngModel"
+    >
+      <option value="">Select Class</option>
+      <option value="Economy">Economy</option>
+      <option value="Business">Business</option>
+      <option value="First">First</option>
+    </select>
+    <div *ngIf="flightClass.touched && flightClass.invalid">
+      <small>Flight Class is required.</small>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    type="submit"
+    [disabled]="
+      flightForm.invalid ||
+      citiesAreSame(flight.departureCity, flight.arrivalCity)
+    "
+  >
+    Submit
+  </button>
+
+</form>
+
+<hr>
+
+<!-- 🧾 Bookings List -->
+<div *ngIf="bookings.length > 0">
+  <h3>Submitted Bookings</h3>
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Flight Number</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Date</th>
+        <th>Seats</th>
+        <th>Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ booking.flightNumber }}</td>
+        <td>{{ booking.departureCity }}</td>
+        <td>{{ booking.arrivalCity }}</td>
+        <td>{{ booking.departureDate }}</td>
+        <td>{{ booking.availableSeats }}</td>
+        <td>{{ booking.flightClass }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

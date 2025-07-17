@@ -1,0 +1,10 @@
+.confirmation-message {
+  color: green;
+  background-color: #41e241; /* light green background */
+  border: 1px solid green;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 10px;
+  width: fit-content;
+}

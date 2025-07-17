@@ -1,0 +1,8 @@
+<div style="border: 1px solid #ccc; padding: 1em; margin-bottom: 1em;">
+  <h2>Flight Details</h2>
+  <p><strong>Flight Number:</strong> {{ flightNumber }}</p>
+  <p><strong>Destination:</strong> {{ destination }}</p>
+  <p><strong>Departure Time:</strong> {{ departureTime | date:'medium' }}</p>
+
+  <button (click)="onBook()">Book Flight</button>
+</div>
